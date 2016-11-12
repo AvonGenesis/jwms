@@ -15,6 +15,8 @@ $(function() {
     // The server will assign the client a random username - store that value
     // here
     var username;
+	
+	var waitingForEnter = true;
 
     // Helper function to print info messages to the chat window
     function print(infoMessage, asHtml) {
@@ -42,6 +44,19 @@ $(function() {
 
     // Alert the user they have been assigned a random username
     print('Logging in...');
+	
+	var $input = $('#chat-input');
+	
+	var time;
+	time = setTimeout(,10000)
+	
+	document.getElementById("chat-input").onkeypress=function(e){
+		if (e.keyCode == 13){
+			clearTimeout(time);
+		};
+			
+		username = $input.val();
+		$input.val('');
 
     // Get an access token for the current user, passing a username (identity)
     // and a device ID - for browser-based apps, we'll always just use the 
@@ -99,9 +114,8 @@ $(function() {
     }
 
     // Send a new message to the general channel
-    var $input = $('#chat-input');
     $input.on('keydown', function(e) {
-        if (e.keyCode == 13) {
+        if (e.keyCode == 13 && /\S/.test($input.val())) {
             generalChannel.sendMessage($input.val())
             $input.val('');
         }

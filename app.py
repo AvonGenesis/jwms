@@ -12,6 +12,7 @@ def index():
 
 @app.route('/token')
 def token():
+
     # get credentials for environment variables
     account_sid = "ACcdbab0f13e08eb8b19b6d3025a9ad6f7"
     api_key = "SK2f52e17a9ca74d4714d28a7c575e1e21"
@@ -19,8 +20,8 @@ def token():
     service_sid = "IS27b6d9077d6c48838881fc41b4748bb2"
 
     # create a randomly generated username for the client
-    identity = fake.user_name()
-
+    identity = request.args.get('identity')
+		
     # Create a unique endpoint ID for the 
     device_id = request.args.get('device')
     endpoint = "TwilioChatDemo:{0}:{1}".format(identity, device_id)
@@ -34,7 +35,7 @@ def token():
 
     # Return token info as JSON
     return jsonify(identity=identity, token=token.to_jwt())
-
+	
 if __name__ == '__main__':
     #app.run(debug=True)
     port = os.getenv('PORT', '5000')
