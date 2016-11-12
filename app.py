@@ -13,10 +13,10 @@ def index():
 @app.route('/token')
 def token():
     # get credentials for environment variables
-    account_sid = os.environ['TWILIO_ACCOUNT_SID']
-    api_key = os.environ['TWILIO_API_KEY']
-    api_secret = os.environ['TWILIO_API_SECRET']
-    service_sid = os.environ['TWILIO_IPM_SERVICE_SID']
+    account_sid = "ACcdbab0f13e08eb8b19b6d3025a9ad6f7"
+    api_key = "SK2f52e17a9ca74d4714d28a7c575e1e21"
+    api_secret = "6XYHaD6O5zPKDpM4wU34NknCQj7L1d6C"
+    service_sid = "IS27b6d9077d6c48838881fc41b4748bb2"
 
     # create a randomly generated username for the client
     identity = fake.user_name()
@@ -36,4 +36,6 @@ def token():
     return jsonify(identity=identity, token=token.to_jwt())
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    #app.run(debug=True)
+    port = os.getenv('PORT', '5000')
+    app.run(host="0.0.0.0", port=int(port))
