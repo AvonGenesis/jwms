@@ -6,9 +6,17 @@ from twilio.access_token import AccessToken, IpMessagingGrant
 app = Flask(__name__)
 fake = Factory.create()
 
+
 @app.route('/')
 def index():
     return app.send_static_file('index.html')
+
+
+@app.route('/text')
+def text():
+    print("HI in controller")
+    return "HI"
+
 
 @app.route('/token')
 def token():
@@ -35,7 +43,8 @@ def token():
     # Return token info as JSON
     return jsonify(identity=identity, token=token.to_jwt())
 
+
 if __name__ == '__main__':
-    #app.run(debug=True)
+    # app.run(debug=True)
     port = os.getenv('PORT', '5000')
     app.run(host="0.0.0.0", port=int(port))

@@ -16,6 +16,9 @@ $(function() {
     // here
     var username;
 
+    var whole_chat;
+
+
     // Helper function to print info messages to the chat window
     function print(infoMessage, asHtml) {
         var $msg = $('<div class="info">');
@@ -29,11 +32,13 @@ $(function() {
 
     // Helper function to print chat message to the chat window
     function printMessage(fromUser, message) {
+
         var $user = $('<span class="username">').text(fromUser + ':');
         if (fromUser === username) {
             $user.addClass('me');
         }
         var $message = $('<span class="message">').text(message);
+
         var $container = $('<div class="message-container">');
         $container.append($user).append($message);
         $chatWindow.append($container);
@@ -102,8 +107,98 @@ $(function() {
     var $input = $('#chat-input');
     $input.on('keydown', function(e) {
         if (e.keyCode == 13) {
+
             generalChannel.sendMessage($input.val())
             $input.val('');
         }
     });
+
+
+
 });
+
+    $("#messages").on("click", ".message", function() {
+        //alert(this.innerText);
+        $.ajax({
+             xhrFields: {
+             withCredentials: true},
+             url: "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2016-05-19",
+             type: "POST", //This is what you should chage
+             dataType: "application/json; charset=utf-8",
+             username: "045219d5-c5c4-4e14-9402-1f59bf9699a7", // Most SAP web services require credentials
+             password: "Y7KXum0M1f6o",
+             processData: false,
+             contentType: "application/json",
+             data:"{\"text\":\" + "+this.innerText+" \"}",
+             success: function () {
+                 alert("success");
+             },
+             error: function (xhr, ajaxOptions) { //Add these parameters to display the required response
+                 //alert("status>>>"+xhr.status);
+                 //alert("Response>>>"+xhr.responseText);
+                 var jsonObj = JSON.parse(xhr.responseText);
+                 var max = -999;
+                 var emotion_tone = "Emotion Tone: "
+                 var social_tone = "Social Tone: "
+                 var language_tone = "Language Tone: "
+                 var tone_id ="";
+
+                 for (var i =0; i< jsonObj.document_tone.tone_categories[0].tones.length;i++){
+                     var tone = jsonObj.document_tone.tone_categories[0].tones[i];
+                     //alert(tone);
+                     if(tone.score>max){
+                         tone_id = tone.tone_id;
+                         max = tone.score;
+                     }
+                 }
+                 var max = -999;
+                 emotion_tone = emotion_tone + tone_id
+                 for (var i =0; i< jsonObj.document_tone.tone_categories[1].tones.length;i++){
+                     var tone = jsonObj.document_tone.tone_categories[1].tones[i];
+                     //alert(tone);
+                     if(tone.score>max){
+                         tone_id = tone.tone_id;
+                         max = tone.score;
+                     }
+                 }
+                 language_tone = language_tone + tone_id
+                 var max = -999;
+                 for (var i =0; i< jsonObj.document_tone.tone_categories[2].tones.length;i++){
+                     var tone = jsonObj.document_tone.tone_categories[2].tones[i];
+                     //alert(tone);
+                     if(tone.score>max){
+                         tone_id = tone.tone_id;
+                         max = tone.score;
+                     }
+                 }
+                 social_tone = social_tone + tone_id
+                 alert(emotion_tone+"\n"+language_tone+"\n"+social_tone);
+             }
+         });
+    });
+
+function startDictation() {
+
+    if (window.hasOwnProperty('webkitSpeechRecognition')) {
+
+      var recognition = new webkitSpeechRecognition();
+
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      recognition.lang = "en-US";
+      recognition.start();
+
+      recognition.onresult = function(e) {
+            document.getElementById('chat-input').value = e.results[0][0].transcript;
+            $("#chat-input").focus();
+            recognition.stop();
+
+      };
+
+      recognition.onerror = function(e) {
+        recognition.stop();
+      }
+
+    }
+  }
