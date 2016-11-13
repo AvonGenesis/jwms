@@ -1,9 +1,9 @@
 emojis = {
-  "joy": "angry.png",
-  "fear": "disgust.png",
-  "sadness": "fear.jpg",
-  "disgust": "happy.jpeg",
-  "anger": "sad.png",
+  "anger": "angry.png",
+  "disgust": "disgust.png",
+  "fear": "fear.jpg",
+  "joy": "happy.jpeg",
+  "sadness": "sad.png",
 }
 
 $(function() {
