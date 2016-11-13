@@ -1,88 +1,82 @@
 $(function() {
-    // Get handle to the chat div 
-    var $chatWindow = $('#messages');
+  // Get handle to the chat div
+  var $chatWindow = $('#messages');
 
-    // Manages the state of our access token we got from the server
-    var accessManager;
+  // Connected to twilio?
+  var connected = false;
 
-    // Our interface to the IP Messaging service
-    var messagingClient;
+  // Manages the state of our access token we got from the server
+  var accessManager;
 
-    // A handle to the "general" chat channel - the one and only channel we
-    // will have in this sample app
-    var generalChannel;
+  // Our interface to the IP Messaging service
+  var messagingClient;
 
-    // The server will assign the client a random username - store that value
-    // here
-    var username;
-	
-	var waitingForEnter = true;
+  // A handle to the "general" chat channel - the one and only channel we
+  // will have in this sample app
+  var generalChannel;
 
-    // Helper function to print info messages to the chat window
-    function print(infoMessage, asHtml) {
-        var $msg = $('<div class="info">');
-        if (asHtml) {
-            $msg.html(infoMessage);
-        } else {
-            $msg.text(infoMessage);
-        }
-        $chatWindow.append($msg);
-    }
+  // The server will assign the client a random username - store that value
+  // here
+  var username;
 
-    // Helper function to print chat message to the chat window
-    function printMessage(fromUser, message) {
-        var $user = $('<span class="username">').text(fromUser);
-        if (fromUser === username) {
-             var $container = $('<div class="message-container me">');
-             var $messagehead = $('<div class="message-head">');
+  var waitingForEnter = true;
 
-            var $messagebody = $('<div class="message-body">');
-        }
+  // Helper function to print info messages to the chat window
+  function print(infoMessage, asHtml) {
+      var $msg = $('<div class="info">');
+      if (asHtml) {
+          $msg.html(infoMessage);
+      } else {
+          $msg.text(infoMessage);
+      }
+      $chatWindow.append($msg);
+  }
 
-        else {
-            var $container = $('<div class="message-container">');
-            var $messagehead = $('<div class="message-head">');
+  // Helper function to print chat message to the chat window
+  function printMessage(fromUser, message) {
+      var $user = $('<span class="username">').text(fromUser);
+      if (fromUser === username) {
+           var $container = $('<div class="message-container me">');
+           var $messagehead = $('<div class="message-head">');
 
-            var $messagebody = $('<div class="message-body">');
+          var $messagebody = $('<div class="message-body">');
+      }
 
-        }
-        var $message = $('<span class="message">').text(message);
-        //var $container = $('<div class="message-container">');
-        $messagehead.append($user);
-        $messagebody.append($message);
-        $container.append($messagehead).append($messagebody);
+      else {
+          var $container = $('<div class="message-container">');
+          var $messagehead = $('<div class="message-head">');
+
+          var $messagebody = $('<div class="message-body">');
+
+      }
+      var $message = $('<span class="message">').text(message);
+      //var $container = $('<div class="message-container">');
+      $messagehead.append($user);
+      $messagebody.append($message);
+      $container.append($messagehead).append($messagebody);
 
 
-        $chatWindow.append($container);
-        $chatWindow.scrollTop($chatWindow[0].scrollHeight);
-    }
+      $chatWindow.append($container);
+      $chatWindow.scrollTop($chatWindow[0].scrollHeight);
+  }
 
-    // Alert the user they have been assigned a random username
-    print('Logging in...');
-	
-	var $input = $('#chat-input');
-	
-	var time;
-	time = setTimeout(,10000)
-	
-	document.getElementById("chat-input").onkeypress=function(e){
-		if (e.keyCode == 13){
-			clearTimeout(time);
-		};
-			
-		username = $input.val();
-		$input.val('');
+  // Alert the user they have been assigned a random username
+  print('Logging in...');
 
-    // Get an access token for the current user, passing a username (identity)
-    // and a device ID - for browser-based apps, we'll always just use the 
-    // value "browser"
+  var $input = $('#chat-input');
+
+
+  // Get an access token for the current user, passing a username (identity)
+  // and a device ID - for browser-based apps, we'll always just use the
+  // value "browser"
+  function connectToTwilio() {
     $.getJSON('/token', {
         identity: username,
         device: 'browser'
     }, function(data) {
         // Alert the user they have been assigned a random username
         username = data.identity;
-        print('You have been assigned a random username of: ' 
+        print('You have been assigned a random username of: '
             + '<span class="me">' + username + '</span>', true);
 
         // Initialize the IP messaging client
@@ -113,26 +107,34 @@ $(function() {
             }
         });
     });
+    connected = true;
+  };
 
-    // Set up channel after it has been found
-    function setupChannel() {
-        // Join the general channel
-        generalChannel.join().then(function(channel) {
-            print('Joined channel as ' 
-                + '<span class="me">' + username + '</span>.', true);
-        });
+  // Set up channel after it has been found
+  function setupChannel() {
+      // Join the general channel
+      generalChannel.join().then(function(channel) {
+          print('Joined channel as '
+              + '<span class="me">' + username + '</span>.', true);
+      });
 
-        // Listen for new messages sent to the channel
-        generalChannel.on('messageAdded', function(message) {
-            printMessage(message.author, message.body);
-        });
-    }
+      // Listen for new messages sent to the channel
+      generalChannel.on('messageAdded', function(message) {
+          printMessage(message.author, message.body);
+      });
+  }
 
-    // Send a new message to the general channel
-    $input.on('keydown', function(e) {
-        if (e.keyCode == 13 && /\S/.test($input.val())) {
-            generalChannel.sendMessage($input.val())
-            $input.val('');
+  // Send a new message to the general channel
+  $input.on('keydown', function(e) {
+      if (e.keyCode == 13 && /\S/.test($input.val())) {
+        if (connected) {
+          generalChannel.sendMessage($input.val());
+        } else {
+          username = $input.val();
+          connectToTwilio();
+          $input.attr("placeholder", "Enter your message");
         }
-    });
+          $input.val('');
+      }
+  });
 });
