@@ -16,6 +16,9 @@ $(function() {
     // here
     var username;
 
+    var infogroup = $('<div class="info-group">');
+    $chatWindow.append(infogroup);
+
     // Helper function to print info messages to the chat window
     function print(infoMessage, asHtml) {
         var $msg = $('<div class="info">');
@@ -24,12 +27,18 @@ $(function() {
         } else {
             $msg.text(infoMessage);
         }
-        $chatWindow.append($msg);
+        infogroup.append($msg);
     }
 
     // Helper function to print chat message to the chat window
     function printMessage(fromUser, message) {
         var $user = $('<span class="username">').text(fromUser);
+        var $usericon = $('<div class="user-icon">');
+        var $maincontainer = $('<div class="main-container">');
+        var $hr = $('<hr>');
+
+
+
         if (fromUser === username) {
              var $container = $('<div class="message-container me">');
              var $messagehead = $('<div class="message-head">');
@@ -49,9 +58,10 @@ $(function() {
         $messagehead.append($user);
         $messagebody.append($message);
         $container.append($messagehead).append($messagebody);
+        $maincontainer.append($usericon).append($container);
 
 
-        $chatWindow.append($container);
+        $chatWindow.append($maincontainer);
         $chatWindow.scrollTop($chatWindow[0].scrollHeight);
     }
 
