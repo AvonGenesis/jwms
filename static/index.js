@@ -34,31 +34,38 @@ $(function() {
 
   // Helper function to print chat message to the chat window
   function printMessage(fromUser, message) {
-      var $user = $('<span class="username">').text(fromUser);
-      if (fromUser === username) {
-           var $container = $('<div class="message-container me">');
-           var $messagehead = $('<div class="message-head">');
-
-          var $messagebody = $('<div class="message-body">');
-      }
-
-      else {
-          var $container = $('<div class="message-container">');
-          var $messagehead = $('<div class="message-head">');
-
-          var $messagebody = $('<div class="message-body">');
-
-      }
-      var $message = $('<span class="message">').text(message);
-      //var $container = $('<div class="message-container">');
-      $messagehead.append($user);
-      $messagebody.append($message);
-      $container.append($messagehead).append($messagebody);
+        var $user = $('<span class="username">').text(fromUser);
+        var $usericon = $('<div class="user-icon">');
+        var $maincontainer = $('<div class="main-container">');
+        var $hr = $('<hr>');
 
 
-      $chatWindow.append($container);
-      $chatWindow.scrollTop($chatWindow[0].scrollHeight);
-  }
+
+        if (fromUser === username) {
+             var $container = $('<div class="message-container me">');
+             var $messagehead = $('<div class="message-head">');
+
+            var $messagebody = $('<div class="message-body">');
+        }
+
+        else {
+            var $container = $('<div class="message-container">');
+            var $messagehead = $('<div class="message-head">');
+
+            var $messagebody = $('<div class="message-body">');
+
+        }
+        var $message = $('<span class="message">').text(message);
+        //var $container = $('<div class="message-container">');
+        $messagehead.append($user);
+        $messagebody.append($message);
+        $container.append($messagehead).append($messagebody);
+        $maincontainer.append($usericon).append($container);
+
+
+        $chatWindow.append($maincontainer);
+        $chatWindow.scrollTop($chatWindow[0].scrollHeight);
+    }
 
   // Alert the user they have been assigned a random username
   print('Logging in...');
