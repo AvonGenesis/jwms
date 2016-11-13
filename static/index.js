@@ -13,7 +13,8 @@ $(function() {
     "anger": "anger.png",
     "disgust": "disgust.png",
     "fear": "fear.png",
-    "sadness": "sad.png"
+    "sadness": "sad.png",
+    "unknown": "unknown.png"
   };
 
   // Our interface to the IP Messaging service
@@ -56,11 +57,14 @@ $(function() {
     } else {
       var $container = $('<div class="message-container">');
       var $messagehead = $('<div class="message-head">');
-      var tone = getTone(message);
+      var toneObj = getTone(message);
       var $iconTone = $('<img>');
-      $iconTone.attr('src', '/static/' + map[tone]);
+      $iconTone.attr('src', '/static/' + map[toneObj.toneID]);
       $iconTone.width("45px");
-      var $usericon = $('<div class="user-icon">').append($iconTone);
+      $tooltip = $("<span>");
+      $tooltip.addClass("tooltiptext");
+      $tooltip.html("Anger: "+toneObj.anger+"%<br/>Sad: "+toneObj.sadness+"%<br/>Disgust: "+toneObj.disgust+"%<br/>Fear: "+toneObj.fear+"%<br/>Joy: "+toneObj.joy+"%")
+      var $usericon = $('<div class="user-icon">').append($iconTone).append($tooltip);
       var $messagebody = $('<div class="message-body">');
     }
 
@@ -83,17 +87,6 @@ $(function() {
     } else {
       $chatWindow.append($maincontainer);
     }
-    $( ".emoji" ).fadeOut( 2000, function() {
-      // Animation complete.
-    });
-
-    $(".message-body").mouseout(function() {
-      $( ".emoji" ).fadeOut( 2000)
-    });
-
-    $(".message-body").mouseover(function() {
-      $( ".emoji" ).show();
-    });
 
     $chatWindow.scrollTop($chatWindow[0].scrollHeight);
   }
@@ -106,6 +99,7 @@ $(function() {
   function getTone(text) {
     var emotion_tone = null;
     var tone_id;
+    var returnObj = {};
     $.ajax({
       url: "/tone",
       async : false,
@@ -124,18 +118,19 @@ $(function() {
 
         for (var i =0; i< jsonObj.document_tone.tone_categories[0].tones.length;i++) {
           var tone = jsonObj.document_tone.tone_categories[0].tones[i];
-
+          returnObj[tone.tone_id] = Math.floor(tone.score * 100)
           if (tone.score>max) {
-            tone_id = tone.tone_id;
+            returnObj.toneID = tone.tone_id;
             max = tone.score;
           }
         }
-        var max = -999;
         // return emotion_tone = emotion_tone + tone_id
-
+        if (max == 0) {
+          returnObj.toneID = "unknown"
+        }
       }
     });
-    return tone_id;
+    return returnObj;
   }
 
   // Get an access token for the current user, passing a username (identity)
