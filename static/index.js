@@ -1,11 +1,3 @@
-emojis = {
-  "anger": "angry.png",
-  "disgust": "disgust.png",
-  "fear": "fear.jpg",
-  "joy": "happy.jpeg",
-  "sadness": "sad.png",
-}
-
 $(function() {
   // Get handle to the chat div
   var $chatWindow = $('#messages');
@@ -17,8 +9,8 @@ $(function() {
   var accessManager;
 
   var map = {
-    "joy": "happy.png",
-    "anger": "angry.png",
+    "joy": "joy.png",
+    "anger": "anger.png",
     "disgust": "disgust.png",
     "fear": "fear.png",
     "sadness": "sad.png"
@@ -54,26 +46,28 @@ $(function() {
     var $usericon = $('<div class="user-icon">');
     var $maincontainer = $('<div class="main-container">');
     var $hr = $('<hr>');
-    var tone = getTone(message);
 
 
     if (fromUser === username) {
-         var $container = $('<div class="message-container me">');
-         var $messagehead = $('<div class="message-head">');
-        var $messagebody = $('<div class="message-body">');
-        var $emoji = $('<img class="emoji" src="/static/'+map[tone]+'"/>');
+      var $container = $('<div class="message-container me">');
+      var $messagehead = $('<div class="message-head">');
+      var $usericon = $('<div class="user-icon-me">');
+      var $messagebody = $('<div class="message-body">');
+    } else {
+      var $container = $('<div class="message-container">');
+      var $messagehead = $('<div class="message-head">');
+      var tone = getTone(message);
+      var $iconTone = $('<img>');
+      $iconTone.attr('src', '/static/' + map[tone]);
+      $iconTone.width("45px");
+      var $usericon = $('<div class="user-icon">').append($iconTone);
+      var $messagebody = $('<div class="message-body">');
     }
 
-    else {
-        var $container = $('<div class="message-container">');
-        var $messagehead = $('<div class="message-head">');
-        var $messagebody = $('<div class="message-body">');
-        var $emoji = $('<img class="emoji" src="/static/'+map[tone]+'"/>');
-    }
     var $message = $('<span class="message">').text(message);
     //var $container = $('<div class="message-container">');
     $messagehead.append($user);
-    $messagebody.append($message).append($emoji);;
+    $messagebody.append($message);
     $container.append($messagehead).append($messagebody);
     $maincontainer.append($usericon).append($container);
 
@@ -83,27 +77,25 @@ $(function() {
     message.indexOf('http://') != -1 ||
     message.indexOf('https://') != -1)
     {
-    var $linkedcontainer = $('<a>').attr('href', message);
-    $linkedcontainer.append($container);
-    $chatWindow.append($linkedcontainer);
+      var $linkedcontainer = $('<a>').attr('href', message);
+      $linkedcontainer.append($container);
+      $chatWindow.append($linkedcontainer);
+    } else {
+      $chatWindow.append($maincontainer);
     }
-    else
-    {
-    $chatWindow.append($container);
-      }
-     $( ".emoji" ).fadeOut( 2000, function() {
-    // Animation complete.
-		});
-		
-		$(".message-body").mouseout(function() {
-		$( ".emoji" ).fadeOut( 2000)
-		});
-		
-		$(".message-body").mouseover(function() {
-		$( ".emoji" ).show();
-		});
+    $( ".emoji" ).fadeOut( 2000, function() {
+      // Animation complete.
+    });
 
-      $chatWindow.scrollTop($chatWindow[0].scrollHeight);
+    $(".message-body").mouseout(function() {
+      $( ".emoji" ).fadeOut( 2000)
+    });
+
+    $(".message-body").mouseover(function() {
+      $( ".emoji" ).show();
+    });
+
+    $chatWindow.scrollTop($chatWindow[0].scrollHeight);
   }
 
   // Alert the user they have been assigned a random username
@@ -218,6 +210,7 @@ $(function() {
       }
   });
 
+  /*
   $("#messages").on("click", ".message", function() {
     $.ajax({
       url: "/tone",
@@ -271,7 +264,7 @@ $(function() {
         alert(emotion_tone+"\n"+language_tone+"\n"+social_tone);
       }
     });
-  });
+  }); */
 });
 
 function startDictation() {
