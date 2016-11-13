@@ -7,6 +7,14 @@ $(function() {
 
   // Manages the state of our access token we got from the server
   var accessManager;
+  
+  var map = {
+	  "joy": "happy.jpeg",
+	  "anger": "angry.png",
+	  "disgust": "disgust.png",
+	  "fear": "fear.jpg",
+	  "sadness": "sad.png"
+	};
 
   // Our interface to the IP Messaging service
   var messagingClient;
@@ -38,19 +46,33 @@ $(function() {
         var $usericon = $('<div class="user-icon">');
         var $maincontainer = $('<div class="main-container">');
         var $hr = $('<hr>');
+		var tone = "joy";
 
 
 
-        if (fromUser === username) {
-             var $container = $('<div class="message-container me">');
-             var $messagehead = $('<div class="message-head">');
+    if (fromUser === username) {
+            var $container = $('<div class="message-container me">');
+            var $messagehead = $('<div class="message-head">');
 
-<<<<<<< HEAD
-      }
+           var $messagebody = $('<div class="message-body">');
+		  
+		   var $emoji = $('<img class="emoji" src="/static/'+map[tone]+'"/>'); 
+		  
+		   
+       }
+
+       else {
+           var $container = $('<div class="message-container">');
+           var $messagehead = $('<div class="message-head">');
+
+           var $messagebody = $('<div class="message-body">');
+		   var $emoji = $('<img class="emoji" src="/static/'+map[tone]+'"/>'); 
+		  
+	   }
 	  var $message = $('<span class="message">').text(message);
       //var $container = $('<div class="message-container">');
       $messagehead.append($user);
-      $messagebody.append($message);
+      $messagebody.append($message).append($emoji);
       $container.append($messagehead).append($messagebody);
 
 	  if(message.indexOf('.com') != -1 || 
@@ -67,38 +89,12 @@ $(function() {
 	  {
 		$chatWindow.append($container);
       }
-	
+		 $( ".emoji" ).fadeOut( 2000, function() {
+    // Animation complete.
+		});
       $chatWindow.scrollTop($chatWindow[0].scrollHeight);
   }
   
-	$(".message-body").click(function() {
-	window.location = $(this).find("a").attr("href"); 
-	return false;
-	});
-=======
-            var $messagebody = $('<div class="message-body">');
-        }
-
-        else {
-            var $container = $('<div class="message-container">');
-            var $messagehead = $('<div class="message-head">');
-
-            var $messagebody = $('<div class="message-body">');
-
-        }
-        var $message = $('<span class="message">').text(message);
-        //var $container = $('<div class="message-container">');
-        $messagehead.append($user);
-        $messagebody.append($message);
-        $container.append($messagehead).append($messagebody);
-        $maincontainer.append($usericon).append($container);
-
-
-        $chatWindow.append($maincontainer);
-        $chatWindow.scrollTop($chatWindow[0].scrollHeight);
-    }
->>>>>>> d6a4b30c9e971d3718b68ccce35fdd4987b0ba49
-
   // Alert the user they have been assigned a random username
   print('Logging in...');
 
