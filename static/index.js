@@ -7,14 +7,14 @@ $(function() {
 
   // Manages the state of our access token we got from the server
   var accessManager;
-  
+
   var map = {
-	  "joy": "happy.jpeg",
-	  "anger": "angry.png",
-	  "disgust": "disgust.png",
-	  "fear": "fear.jpg",
-	  "sadness": "sad.png"
-	};
+    "joy": "happy.jpeg",
+    "anger": "angry.png",
+    "disgust": "disgust.png",
+    "fear": "fear.jpg",
+    "sadness": "sad.png"
+  };
 
   // Our interface to the IP Messaging service
   var messagingClient;
@@ -46,7 +46,7 @@ $(function() {
         var $usericon = $('<div class="user-icon">');
         var $maincontainer = $('<div class="main-container">');
         var $hr = $('<hr>');
-		var tone = "joy";
+    var tone = "joy";
 
 
 
@@ -55,10 +55,10 @@ $(function() {
             var $messagehead = $('<div class="message-head">');
 
            var $messagebody = $('<div class="message-body">');
-		  
-		   var $emoji = $('<img class="emoji" src="/static/'+map[tone]+'"/>'); 
-		  
-		   
+
+       var $emoji = $('<img class="emoji" src="/static/'+map[tone]+'"/>');
+
+
        }
 
        else {
@@ -66,35 +66,35 @@ $(function() {
            var $messagehead = $('<div class="message-head">');
 
            var $messagebody = $('<div class="message-body">');
-		   var $emoji = $('<img class="emoji" src="/static/'+map[tone]+'"/>'); 
-		  
-	   }
-	  var $message = $('<span class="message">').text(message);
+       var $emoji = $('<img class="emoji" src="/static/'+map[tone]+'"/>');
+
+     }
+    var $message = $('<span class="message">').text(message);
       //var $container = $('<div class="message-container">');
       $messagehead.append($user);
       $messagebody.append($message).append($emoji);
       $container.append($messagehead).append($messagebody);
 
-	  if(message.indexOf('.com') != -1 || 
-	  message.indexOf('.io') != -1 || 
-	  message.indexOf('www.') != -1 || 
-	  message.indexOf('http://') != -1 || 
-	  message.indexOf('https://') != -1)
-	  {
-		var $linkedcontainer = $('<a>').attr('href', message);
-		$linkedcontainer.append($container);
-		$chatWindow.append($linkedcontainer);
-	  }
-	  else
-	  {
-		$chatWindow.append($container);
+    if(message.indexOf('.com') != -1 ||
+    message.indexOf('.io') != -1 ||
+    message.indexOf('www.') != -1 ||
+    message.indexOf('http://') != -1 ||
+    message.indexOf('https://') != -1)
+    {
+    var $linkedcontainer = $('<a>').attr('href', message);
+    $linkedcontainer.append($container);
+    $chatWindow.append($linkedcontainer);
+    }
+    else
+    {
+    $chatWindow.append($container);
       }
-		 $( ".emoji" ).fadeOut( 2000, function() {
+     $( ".emoji" ).fadeOut( 2000, function() {
     // Animation complete.
-		});
+    });
       $chatWindow.scrollTop($chatWindow[0].scrollHeight);
   }
-  
+
   // Alert the user they have been assigned a random username
   print('Logging in...');
 
