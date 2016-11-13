@@ -1,3 +1,11 @@
+emojis = {
+  "joy": "angry.png",
+  "fear": "disgust.png",
+  "sadness": "fear.jpg",
+  "disgust": "happy.jpeg",
+  "anger": "sad.png",
+}
+
 $(function() {
   // Get handle to the chat div
   var $chatWindow = $('#messages');
@@ -42,38 +50,32 @@ $(function() {
 
   // Helper function to print chat message to the chat window
   function printMessage(fromUser, message) {
-        var $user = $('<span class="username">').text(fromUser);
-        var $usericon = $('<div class="user-icon">');
-        var $maincontainer = $('<div class="main-container">');
-        var $hr = $('<hr>');
-    var tone = "joy";
-
+    var $user = $('<span class="username">').text(fromUser);
+    var $usericon = $('<div class="user-icon">');
+    var $maincontainer = $('<div class="main-container">');
+    var $hr = $('<hr>');
+    var tone = getTone(message);
 
 
     if (fromUser === username) {
-            var $container = $('<div class="message-container me">');
-            var $messagehead = $('<div class="message-head">');
+         var $container = $('<div class="message-container me">');
+         var $messagehead = $('<div class="message-head">');
+        var $messagebody = $('<div class="message-body">');
+        var $emoji = $('<img class="emoji" src="/static/'+map[tone]+'"/>');
+    }
 
-           var $messagebody = $('<div class="message-body">');
-
-       var $emoji = $('<img class="emoji" src="/static/'+map[tone]+'"/>');
-
-
-       }
-
-       else {
-           var $container = $('<div class="message-container">');
-           var $messagehead = $('<div class="message-head">');
-
-           var $messagebody = $('<div class="message-body">');
-       var $emoji = $('<img class="emoji" src="/static/'+map[tone]+'"/>');
-
-     }
+    else {
+        var $container = $('<div class="message-container">');
+        var $messagehead = $('<div class="message-head">');
+        var $messagebody = $('<div class="message-body">');
+        var $emoji = $('<img class="emoji" src="/static/'+map[tone]+'"/>');
+    }
     var $message = $('<span class="message">').text(message);
-      //var $container = $('<div class="message-container">');
-      $messagehead.append($user);
-      $messagebody.append($message).append($emoji);
-      $container.append($messagehead).append($messagebody);
+    //var $container = $('<div class="message-container">');
+    $messagehead.append($user);
+    $messagebody.append($message).append($emoji);;
+    $container.append($messagehead).append($messagebody);
+    $maincontainer.append($usericon).append($container);
 
     if(message.indexOf('.com') != -1 ||
     message.indexOf('.io') != -1 ||
@@ -100,6 +102,40 @@ $(function() {
 
   var $input = $('#chat-input');
 
+  function getTone(text) {
+    var emotion_tone = null;
+    var tone_id;
+    $.ajax({
+      url: "/tone",
+      async : false,
+      type: "POST",
+      headers: {
+          "Content-Type": "application/json; charset=utf-8",
+      },
+      contentType: "application/json",
+      data: JSON.stringify({
+          "text": text
+      }),
+      success: function (xhr) {
+        // var jsonObj = JSON.parse(xhr.responseText);
+        var jsonObj = xhr;
+        var max = -999;
+
+        for (var i =0; i< jsonObj.document_tone.tone_categories[0].tones.length;i++) {
+          var tone = jsonObj.document_tone.tone_categories[0].tones[i];
+
+          if (tone.score>max) {
+            tone_id = tone.tone_id;
+            max = tone.score;
+          }
+        }
+        var max = -999;
+        // return emotion_tone = emotion_tone + tone_id
+
+      }
+    });
+    return tone_id;
+  }
 
   // Get an access token for the current user, passing a username (identity)
   // and a device ID - for browser-based apps, we'll always just use the
