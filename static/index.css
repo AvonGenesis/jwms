@@ -253,21 +253,32 @@ input#chat-input {
 }
 
 .user-icon {
-    height: 64px;
-    width: 64px;
-    display: inline-block;
-    background-color: #747575;
-    background-size: 100% 200%;
-    vertical-align: top;
-    margin-right: 19px;
-    padding: 10px;
-    -webkit-transition: background-position 1s;
-    -moz-transition: background-position 1s;
-    transition: background-position 1s;
-    -webkit-border-radius: 3px;
--moz-border-radius: 3px;
-border-radius: 3px;
-  }
+  height: 64px;
+  width: 64px;
+  display: inline-block;
+  background-size: 100% 200%;
+  vertical-align: top;
+  margin-right: 19px;
+  padding: 10px;
+  -webkit-transition: background-position 1s;
+  -moz-transition: background-position 1s;
+  transition: background-position 1s;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.low {
+  background-color: #e74c3c;
+}
+
+.medium {
+  background-color: #f1c40f;
+}
+
+.high {
+  background-color: #2ecc71;
+}
 
 .message-container .username.me {
   display:inline-block;

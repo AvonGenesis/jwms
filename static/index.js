@@ -30,6 +30,9 @@ $(function() {
 
   var waitingForEnter = true;
 
+  var infogroup = $('<div class="info-group">');
+    $chatWindow.append(infogroup);
+
   // Helper function to print info messages to the chat window
   function print(infoMessage, asHtml) {
       var $msg = $('<div class="info">');
@@ -38,7 +41,7 @@ $(function() {
       } else {
           $msg.text(infoMessage);
       }
-      $chatWindow.append($msg);
+      infogroup.append($msg);
   }
 
   // Helper function to print chat message to the chat window
@@ -65,6 +68,13 @@ $(function() {
       $tooltip.addClass("tooltiptext");
       $tooltip.html("Anger: "+toneObj.anger+"%<br/>Sad: "+toneObj.sadness+"%<br/>Disgust: "+toneObj.disgust+"%<br/>Fear: "+toneObj.fear+"%<br/>Joy: "+toneObj.joy+"%")
       var $usericon = $('<div class="user-icon">').append($iconTone).append($tooltip);
+      if (toneObj[toneObj.toneID] < 33) {
+        $usericon.addClass("low");
+      } else if (toneObj[toneObj.toneID] < 66) {
+        $usericon.addClass("medium");
+      } else {
+        $usericon.addClass("high");
+      }
       var $messagebody = $('<div class="message-body">');
     }
 
