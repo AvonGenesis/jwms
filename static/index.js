@@ -154,7 +154,7 @@ $(function() {
       },
       contentType: "application/json",
       data: JSON.stringify({
-          "text": "This is the text"
+          "text": this.innerText
       }),
       success: function (xhr) {
         alert("success");
