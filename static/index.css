@@ -241,9 +241,10 @@ input#chat-input {
 .branding span {
    vertical-align: middle;
     color: white;
-    /* text-transform: uppercase; */
-    font-family: 'Roboto', sans-serif;
-    font-weight: 300;
+    text-transform: uppercase;
+        font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+    font-size: 26px;
 
 }
 
