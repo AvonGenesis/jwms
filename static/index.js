@@ -34,20 +34,18 @@ $(function() {
 
   // Helper function to print chat message to the chat window
   function printMessage(fromUser, message) {
-      var $user = $('<span class="username">').text(fromUser);
-      if (fromUser === username) {
-           var $container = $('<div class="message-container me">');
-           var $messagehead = $('<div class="message-head">');
+        var $user = $('<span class="username">').text(fromUser);
+        var $usericon = $('<div class="user-icon">');
+        var $maincontainer = $('<div class="main-container">');
+        var $hr = $('<hr>');
 
-          var $messagebody = $('<div class="message-body">');
-      }
 
-      else {
-          var $container = $('<div class="message-container">');
-          var $messagehead = $('<div class="message-head">');
 
-          var $messagebody = $('<div class="message-body">');
+        if (fromUser === username) {
+             var $container = $('<div class="message-container me">');
+             var $messagehead = $('<div class="message-head">');
 
+<<<<<<< HEAD
       }
 	  var $message = $('<span class="message">').text(message);
       //var $container = $('<div class="message-container">');
@@ -77,6 +75,29 @@ $(function() {
 	window.location = $(this).find("a").attr("href"); 
 	return false;
 	});
+=======
+            var $messagebody = $('<div class="message-body">');
+        }
+
+        else {
+            var $container = $('<div class="message-container">');
+            var $messagehead = $('<div class="message-head">');
+
+            var $messagebody = $('<div class="message-body">');
+
+        }
+        var $message = $('<span class="message">').text(message);
+        //var $container = $('<div class="message-container">');
+        $messagehead.append($user);
+        $messagebody.append($message);
+        $container.append($messagehead).append($messagebody);
+        $maincontainer.append($usericon).append($container);
+
+
+        $chatWindow.append($maincontainer);
+        $chatWindow.scrollTop($chatWindow[0].scrollHeight);
+    }
+>>>>>>> d6a4b30c9e971d3718b68ccce35fdd4987b0ba49
 
   // Alert the user they have been assigned a random username
   print('Logging in...');
@@ -155,4 +176,81 @@ $(function() {
           $input.val('');
       }
   });
+
+  $("#messages").on("click", ".message", function() {
+    $.ajax({
+      url: "/tone",
+      type: "POST",
+      headers: {
+          "Content-Type": "application/json; charset=utf-8",
+      },
+      contentType: "application/json",
+      data: JSON.stringify({
+          "text": this.innerText
+      }),
+      success: function (xhr) {
+        alert("success");
+        // var jsonObj = JSON.parse(xhr.responseText);
+        var jsonObj = xhr;
+        var max = -999;
+        var emotion_tone = "Emotion Tone: "
+        var social_tone = "Social Tone: "
+        var language_tone = "Language Tone: "
+        var tone_id ="";
+
+        for (var i =0; i< jsonObj.document_tone.tone_categories[0].tones.length;i++) {
+          var tone = jsonObj.document_tone.tone_categories[0].tones[i];
+          //alert(tone);
+          if(tone.score>max){
+            tone_id = tone.tone_id;
+            max = tone.score;
+          }
+        }
+        var max = -999;
+        emotion_tone = emotion_tone + tone_id
+        for (var i =0; i< jsonObj.document_tone.tone_categories[1].tones.length;i++) {
+          var tone = jsonObj.document_tone.tone_categories[1].tones[i];
+          //alert(tone);
+          if(tone.score>max) {
+            tone_id = tone.tone_id;
+            max = tone.score;
+          }
+        }
+        language_tone = language_tone + tone_id
+        var max = -999;
+        for (var i =0; i< jsonObj.document_tone.tone_categories[2].tones.length;i++){
+          var tone = jsonObj.document_tone.tone_categories[2].tones[i];
+          //alert(tone);
+          if(tone.score>max){
+            tone_id = tone.tone_id;
+            max = tone.score;
+          }
+        }
+        social_tone = social_tone + tone_id
+        alert(emotion_tone+"\n"+language_tone+"\n"+social_tone);
+      }
+    });
+  });
 });
+
+function startDictation() {
+  if (window.hasOwnProperty('webkitSpeechRecognition')) {
+    var recognition = new webkitSpeechRecognition();
+
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.lang = "en-US";
+    recognition.start();
+
+    recognition.onresult = function(e) {
+      document.getElementById('chat-input').value = e.results[0][0].transcript;
+      $("#chat-input").focus();
+      recognition.stop();
+    };
+
+    recognition.onerror = function(e) {
+      recognition.stop();
+    }
+  }
+}

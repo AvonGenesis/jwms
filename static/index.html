@@ -12,21 +12,18 @@
       <span>Motus</span>
     </div>
   </nav>
-  <header>
-    <a href="https://www.twilio.com/docs/api/ip-messaging/guides/quickstart-js"
-    target="_blank">Read the getting started guide
-    <i class="fa fa-fw fa-external-link"></i>
-  </a>
-</header>
 
-<section>
-  <div id="messages"></div>
-  <input id="chat-input" type="text" placeholder="Enter your username" autofocus/>
-</section>
+  <section>
+    <div id="messages"></div>
+    <input id="chat-input" type="text" placeholder="Enter your username" autofocus/>
+    <div class="speech">
+      <img onclick="startDictation()" src="//i.imgur.com/cHidSVu.gif" />
+    </div>
+  </section>
 
-<script src="//media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>
-<script src="//media.twiliocdn.com/sdk/rtc/js/ip-messaging/v0.9/twilio-ip-messaging.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="/static/index.js"></script>
+  <script src="//media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>
+  <script src="//media.twiliocdn.com/sdk/rtc/js/ip-messaging/v0.9/twilio-ip-messaging.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="/static/index.js"></script>
 </body>
 </html>
