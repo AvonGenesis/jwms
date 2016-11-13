@@ -42,14 +42,14 @@ $(function() {
         if (fromUser === username) {
              var $container = $('<div class="message-container me">');
              var $messagehead = $('<div class="message-head">');
-
+             var $usericon = $('<div class="user-icon-me">');
             var $messagebody = $('<div class="message-body">');
         }
 
         else {
             var $container = $('<div class="message-container">');
             var $messagehead = $('<div class="message-head">');
-
+            var $usericon = $('<div class="user-icon">');
             var $messagebody = $('<div class="message-body">');
 
         }
