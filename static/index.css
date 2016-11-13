@@ -264,6 +264,9 @@ input#chat-input {
     -webkit-transition: background-position 1s;
     -moz-transition: background-position 1s;
     transition: background-position 1s;
+    -webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;
   }
 
 .message-container .username.me {
