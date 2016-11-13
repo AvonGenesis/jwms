@@ -92,6 +92,15 @@ $(function() {
 		 $( ".emoji" ).fadeOut( 2000, function() {
     // Animation complete.
 		});
+		
+		$(".message-body").mouseout(function() {
+		$( ".emoji" ).fadeOut( 2000)
+		});
+		
+		$(".message-body").mouseover(function() {
+		$( ".emoji" ).show();
+		});
+		
       $chatWindow.scrollTop($chatWindow[0].scrollHeight);
   }
   

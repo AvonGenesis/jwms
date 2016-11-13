@@ -167,7 +167,7 @@ hr {
 .emoji {
 	height: 30px;
 	width: 30px;
-	right: 2px;
+	float: right;
 }
 
 .message-container .username {
