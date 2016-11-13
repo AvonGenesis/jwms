@@ -247,14 +247,31 @@ input#chat-input {
 
 }
 
+.box {
+    width: 200px; height: 100px;
+    background-size: 100% 200%;
+    background-image: linear-gradient(to bottom, red 50%, black 50%);
+    -webkit-transition: background-position 1s;
+    -moz-transition: background-position 1s;
+    transition: background-position 1s;
+}
+
+.user-icon:hover {
+    background-position: 0 -100%;
+}
+
 .user-icon {
     height: 64px;
     width: 64px;
     display: inline-block;
-    background-color: #c3c3c3;
+    background-image: linear-gradient(to bottom, red 50%, black 50%);
+    background-size: 100% 200%;
     vertical-align: top;
     margin-right: 19px;
     padding: 10px;
+    -webkit-transition: background-position 1s;
+    -moz-transition: background-position 1s;
+    transition: background-position 1s;
   }
 
 .message-container .username.me {
