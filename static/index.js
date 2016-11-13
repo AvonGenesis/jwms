@@ -9,10 +9,10 @@ $(function() {
   var accessManager;
   
   var map = {
-	  "joy": "happy.jpeg",
+	  "joy": "happy.png",
 	  "anger": "angry.png",
 	  "disgust": "disgust.png",
-	  "fear": "fear.jpg",
+	  "fear": "fear.plg",
 	  "sadness": "sad.png"
 	};
 
