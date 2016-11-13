@@ -49,16 +49,34 @@ $(function() {
           var $messagebody = $('<div class="message-body">');
 
       }
-      var $message = $('<span class="message">').text(message);
+	  var $message = $('<span class="message">').text(message);
       //var $container = $('<div class="message-container">');
       $messagehead.append($user);
       $messagebody.append($message);
       $container.append($messagehead).append($messagebody);
 
-
-      $chatWindow.append($container);
+	  if(message.indexOf('.com') != -1 || 
+	  message.indexOf('.io') != -1 || 
+	  message.indexOf('www.') != -1 || 
+	  message.indexOf('http://') != -1 || 
+	  message.indexOf('https://') != -1)
+	  {
+		var $linkedcontainer = $('<a>').attr('href', message);
+		$linkedcontainer.append($container);
+		$chatWindow.append($linkedcontainer);
+	  }
+	  else
+	  {
+		$chatWindow.append($container);
+      }
+	
       $chatWindow.scrollTop($chatWindow[0].scrollHeight);
   }
+  
+	$(".message-body").click(function() {
+	window.location = $(this).find("a").attr("href"); 
+	return false;
+	});
 
   // Alert the user they have been assigned a random username
   print('Logging in...');
