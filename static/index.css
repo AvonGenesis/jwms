@@ -28,8 +28,7 @@ header a, header a:visited {
 nav {
   background-color: #2f9ae6;
   padding: 20px 0;
-  position: relative;
-  z-index: 1;
+  margin-bottom: 10px;
 }
 
 nav div.container {
@@ -62,10 +61,13 @@ section input {
 
 #messages {
   background-color:#f9f9f9;
+  padding:10px;
   height:100%;
   width:800px;
   margin:0 auto;
-  margin-top: -2px;
+  -webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;
   overflow-y:auto;
   border: 1px solid #b9b9b9;
   -webkit-box-shadow: 0px 0.9px 5px 0px rgba(156,156,156,0.56);
@@ -86,8 +88,8 @@ box-shadow: 0px 0.9px 5px 0px rgba(156,156,156,0.56);
   font-weight: 100;
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
-  padding: 2px 11px;
 }
+
 
 div.message-container {
   margin:5px 0;
@@ -107,11 +109,7 @@ div.message-container {
   border-radius: 3px;
 }
 
-div.info-group {
-    padding:10px;
-        border-bottom: 1px solid;
 
-}
 
 span.message {
   font-weight: 300;
@@ -137,7 +135,6 @@ div.message-body {
   -moz-border-radius-bottomleft: 3px;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
-  word-wrap: break-word;
 }
 
 
