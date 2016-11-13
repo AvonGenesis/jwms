@@ -143,7 +143,7 @@ $(function() {
     }, function(data) {
         // Alert the user they have been assigned a random username
         username = data.identity;
-        print('You have been assigned a random username of: '
+        print('You have authenticated as: '
             + '<span class="me">' + username + '</span>', true);
 
         // Initialize the IP messaging client

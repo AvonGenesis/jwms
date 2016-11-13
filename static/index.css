@@ -248,15 +248,6 @@ input#chat-input {
 
 }
 
-.box {
-    width: 200px; height: 100px;
-    background-size: 100% 200%;
-    background-image: linear-gradient(to bottom, red 50%, black 50%);
-    -webkit-transition: background-position 1s;
-    -moz-transition: background-position 1s;
-    transition: background-position 1s;
-}
-
 .user-icon:hover {
     background-position: 0 -100%;
 }
@@ -265,7 +256,7 @@ input#chat-input {
     height: 64px;
     width: 64px;
     display: inline-block;
-    background-image: linear-gradient(to bottom, red 50%, black 50%);
+    background-color: #747575;
     background-size: 100% 200%;
     vertical-align: top;
     margin-right: 19px;
